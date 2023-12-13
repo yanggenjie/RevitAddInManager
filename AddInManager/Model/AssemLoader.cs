@@ -70,6 +70,7 @@ public class AssemLoader
         {
             return null;
         }
+       
         this.parsingOnly = parsingOnly;
         originalFolder = Path.GetDirectoryName(originalFilePath);
         var stringBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(originalFilePath));
@@ -122,8 +123,8 @@ public class AssemLoader
         {
             Monitor.Enter(this);
             //Agree this error to load depend event assembly, see https://github.com/chuongmep/RevitAddInManager/issues/7
-            //result = Assembly.LoadFile(filePath);
             result = Assembly.LoadFile(filePath);
+            //result = Assembly.Load(File.ReadAllBytes(filePath));
         }
         finally
         {
@@ -186,6 +187,8 @@ public class AssemLoader
             }
             result = CopyAndLoadAddin(filePath, true);
         }
+
+        
 
         return result;
     }

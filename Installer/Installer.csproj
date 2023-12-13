@@ -5,14 +5,15 @@
         <PlatformTarget>x64</PlatformTarget>
         <TargetFramework>net48</TargetFramework>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <Configurations>Debug;Release;Debug R18</Configurations>
     </PropertyGroup>
     <PropertyGroup Condition="$(Configuration.Contains('Release'))">
         <Optimize>true</Optimize>
         <DebugType>none</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="WixSharp.bin" Version="1.19.*"/>
-        <PackageReference Include="WixSharp.wix.bin" Version="3.11.*"/>
+        <PackageReference Include="WixSharp.bin" Version="1.19.*" />
+        <PackageReference Include="WixSharp.wix.bin" Version="3.11.*" />
         <PackageReference Include="SharpZipLib" Version="1.4.0" />
     </ItemGroup>
 </Project>
