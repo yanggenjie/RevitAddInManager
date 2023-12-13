@@ -15,10 +15,24 @@ public static class FileUtils
         var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var tempPath = Path.Combine(folderPath, "Temp");
         var directoryInfo = new DirectoryInfo(Path.Combine(tempPath, DefaultSetting.TempFolderName));
-        if (!directoryInfo.Exists)
+        if (directoryInfo.Exists)
+        {
+            try
+            {
+                directoryInfo.Delete(true);
+            }
+            catch (Exception)
+            {
+            }
+        }
+        try
         {
             directoryInfo.Create();
         }
+        catch (Exception)
+        {
+        }
+
         foreach (var directoryInfo2 in directoryInfo.GetDirectories())
         {
             try
@@ -126,26 +140,28 @@ public static class FileUtils
         else
         {
             var folderSize = GetFolderSize(directoryName);
-            if (folderSize > 50L)
-            {
-                switch (FolderTooBigDialog.Show(directoryName, folderSize))
-                {
-                    case MessageBoxResult.Yes:
-                        CopyDirectory(directoryName, destFolder, allCopiedFiles);
-                        break;
+            //if (folderSize > 50L)
+            //{
+            //    switch (FolderTooBigDialog.Show(directoryName, folderSize))
+            //    {
+            //        case MessageBoxResult.Yes:
+            //            CopyDirectory(directoryName, destFolder, allCopiedFiles);
+            //            break;
 
-                    case MessageBoxResult.No:
-                        CopyFileToFolder(sourceFilePath, destFolder, true, allCopiedFiles);
-                        break;
+            //        case MessageBoxResult.No:
+            //            CopyFileToFolder(sourceFilePath, destFolder, true, allCopiedFiles);
+            //            break;
 
-                    default:
-                        return null;
-                }
-            }
-            else
-            {
-                CopyDirectory(directoryName, destFolder, allCopiedFiles);
-            }
+            //        default:
+            //            return null;
+            //    }
+            //}
+            //else
+            //{
+            //    CopyDirectory(directoryName, destFolder, allCopiedFiles);
+            //}
+            CopyDirectory(directoryName, destFolder, allCopiedFiles);
+
         }
         var text3 = Path.Combine(destFolder, Path.GetFileName(sourceFilePath));
         if (File.Exists(text3))
