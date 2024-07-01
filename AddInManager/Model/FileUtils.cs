@@ -15,35 +15,11 @@ public static class FileUtils
         var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var tempPath = Path.Combine(folderPath, "Temp");
         var directoryInfo = new DirectoryInfo(Path.Combine(tempPath, DefaultSetting.TempFolderName));
-        if (directoryInfo.Exists)
+        if (!directoryInfo.Exists)
         {
-            try
-            {
-                directoryInfo.Delete(true);
-            }
-            catch (Exception)
-            {
-            }
-        }
-        try
-        {
-            directoryInfo.Create();
-        }
-        catch (Exception)
-        {
+            directoryInfo.Create(); 
         }
 
-        foreach (var directoryInfo2 in directoryInfo.GetDirectories())
-        {
-            try
-            {
-                Directory.Delete(directoryInfo2.FullName, true);
-            }
-            catch
-            {
-                // ignored
-            }
-        }
         var str = $"{DateTime.Now:yyyyMMdd_HHmmss_ffff}";
         var path = Path.Combine(directoryInfo.FullName, prefix + str);
         var directoryInfo3 = new DirectoryInfo(path);
