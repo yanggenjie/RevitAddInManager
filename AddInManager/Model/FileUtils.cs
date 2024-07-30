@@ -14,38 +14,14 @@ public static class FileUtils
     {
         var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var tempPath = Path.Combine(folderPath, "Temp");
-        var directoryInfo = new DirectoryInfo(Path.Combine(tempPath, DefaultSetting.TempFolderName));
-        if (directoryInfo.Exists)
+        var addinTemp = Path.Combine(tempPath, DefaultSetting.TempFolderName);
+        if (!Directory.Exists(addinTemp))
         {
-            try
-            {
-                directoryInfo.Delete(true);
-            }
-            catch (Exception)
-            {
-            }
-        }
-        try
-        {
-            directoryInfo.Create();
-        }
-        catch (Exception)
-        {
+            Directory.CreateDirectory(addinTemp);
         }
 
-        foreach (var directoryInfo2 in directoryInfo.GetDirectories())
-        {
-            try
-            {
-                Directory.Delete(directoryInfo2.FullName, true);
-            }
-            catch
-            {
-                // ignored
-            }
-        }
         var str = $"{DateTime.Now:yyyyMMdd_HHmmss_ffff}";
-        var path = Path.Combine(directoryInfo.FullName, prefix + str);
+        var path = Path.Combine(addinTemp, prefix + str);
         var directoryInfo3 = new DirectoryInfo(path);
         directoryInfo3.Create();
         return directoryInfo3.FullName;
@@ -161,7 +137,6 @@ public static class FileUtils
             //    CopyDirectory(directoryName, destFolder, allCopiedFiles);
             //}
             CopyDirectory(directoryName, destFolder, allCopiedFiles);
-
         }
         var text3 = Path.Combine(destFolder, Path.GetFileName(sourceFilePath));
         if (File.Exists(text3))

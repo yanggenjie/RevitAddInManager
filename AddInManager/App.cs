@@ -8,6 +8,8 @@ using RevitAddinManager.View.Control;
 using RevitAddinManager.ViewModel;
 using RevitElementBipChecker.Command;
 using static RevitAddinManager.Model.BitmapSourceConverter;
+using System.Windows.Shell;
+using System.IO;
 
 namespace RevitAddinManager;
 
@@ -34,6 +36,20 @@ public class App : IExternalApplication
     }
     public Result OnShutdown(UIControlledApplication application)
     {
+        var folderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        var tempPath = Path.Combine(folderPath, "Temp");
+        var addinTemp = Path.Combine(tempPath, DefaultSetting.TempFolderName);
+        if (Directory.Exists(addinTemp))
+        {
+            try
+            {
+                Directory.Delete(addinTemp, true);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
         return Result.Cancelled;
     }
     private static void CreateRibbonPanel(UIControlledApplication application)
@@ -58,7 +74,7 @@ public class App : IExternalApplication
 
     }
     private static readonly FieldInfo RibbonPanelField = typeof(Autodesk.Revit.UI.RibbonPanel).GetField("m_RibbonPanel", BindingFlags.Instance | BindingFlags.NonPublic);
-       
+
     public static Autodesk.Windows.RibbonPanel GetRibbonPanel(Autodesk.Revit.UI.RibbonPanel panel)
     {
         return RibbonPanelField.GetValue(panel) as Autodesk.Windows.RibbonPanel;
