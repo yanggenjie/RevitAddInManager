@@ -31,7 +31,7 @@ public class AssemLoader
     public void CopyGeneratedFilesBack()
     {
         var files = Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories);
-        if(!files.Any()) return;
+        if (!files.Any()) return;
         foreach (var text in files)
         {
             if (copiedFiles.ContainsKey(text))
@@ -66,11 +66,11 @@ public class AssemLoader
 
     public Assembly LoadAddinsToTempFolder(string originalFilePath, bool parsingOnly)
     {
-        if (string.IsNullOrEmpty(originalFilePath)|| !File.Exists(originalFilePath))
+        if (string.IsNullOrEmpty(originalFilePath) || !File.Exists(originalFilePath))
         {
             return null;
         }
-       
+
         this.parsingOnly = parsingOnly;
         originalFolder = Path.GetDirectoryName(originalFilePath);
         var stringBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(originalFilePath));
@@ -179,16 +179,14 @@ public class AssemLoader
             {
                 var loader = new AssemblyLoader(args.Name);
                 loader.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                if (loader.ShowDialog() != true)
-                {
-                    return null;
-                }
+                //if (loader.ShowDialog() != true)
+                //{
+                //    return null;
+                //}
                 filePath = loader.resultPath;
             }
             result = CopyAndLoadAddin(filePath, true);
         }
-
-        
 
         return result;
     }
@@ -199,7 +197,7 @@ public class AssemLoader
         {
             var array = new string[] { ".dll", ".exe" };
             var filePath = string.Empty;
-            if(string.IsNullOrEmpty(assemName)) return String.Empty;
+            if (string.IsNullOrEmpty(assemName)) return String.Empty;
             // Avoid ArgumentOutOfRangeException from .Substring() by checking length parameter
             var strLength = assemName.IndexOf(',');
             var str = strLength == -1 ? assemName : assemName.Substring(0, strLength);
